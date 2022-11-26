@@ -20,8 +20,6 @@ def floyd(graph):
         for i in range(graph.Vertexes):
             if D[k][i] == math.inf:
                 D[k][i] = 0
-
-
     return D
     
 
