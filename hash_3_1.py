@@ -10,7 +10,7 @@ class LinkedList:
         self.head = Node(None, self.tail)
         self.len = 0
 
-class HashLinear:
+class OpenHash:
     def __init__(self, M):
         self.M = M
         self.T = [LinkedList() for i in range(M)]
@@ -49,9 +49,7 @@ class HashLinear:
         if current.next.data == s:
             current.next = None
             self.T[hash].tail = current
-
-        
-
+  
     def search(self, s):
         hash = fold(s, self.M)
         current = self.T[hash].head
@@ -81,6 +79,8 @@ class HashLinear:
 def fold(s, X):
     sum = 0
     mul = 1
+    if type(s) == int:
+        s = str(s)
     for i in range(len(s)):
         if i % 4 == 0:
             mul = 1
@@ -89,29 +89,32 @@ def fold(s, X):
         sum += ord(s[i]) * mul
     return sum % X
 
-
-
 if __name__ == "__main__":
     print(f'{"Step:":>22}{" Time (s)"}')
     init_start = time.time()
-    table = HashLinear(10000)
+    table = OpenHash(10000)
     print(f'{"Initialization:":>22}',time.time() - init_start)
 
     fileEnglish = open('words_alpha.txt', 'r')
     fileFinnish = open('kaikkisanat.txt', 'r')
     linesEnglish = fileEnglish.readlines()     
+    linesEnglish = [line.strip() for line in linesEnglish]
 
     add_start = time.time()
     for line in linesEnglish:
-        table.insert(line.strip())
+        table.insert(line)
     print(f'{"Adding words:":>22}',time.time() - add_start)
+    
+    linesFinnish = fileFinnish.readlines()
+    linesFinnish = [line.strip() for line in linesFinnish]
+    count = 0
 
     search_start = time.time()
-    linesFinnish = fileFinnish.readlines()
-    count = 0
     for line in linesFinnish:
-        if (table.search(line.strip())):
+        if (table.search(line)):
             count += 1
     print(f'{"Finding common words:":>22}',time.time() - search_start)
-    print("Matches: ", end="")
-    print(count)
+    print()
+    print(f'{"Matches:":>22}{" "}', count)
+    
+    table.print()

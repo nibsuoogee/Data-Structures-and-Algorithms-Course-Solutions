@@ -4,46 +4,8 @@ def salesman(city_map):
     order = [None] * (len(city_map)+1)
     order[0] = 0
     order[-1] = 0
-    lower_bound = 999999
-    upper_bound = 0
-    for i in range(len(city_map)):
-        for j in range(len(city_map)):
-            if city_map[i][j] < lower_bound and i != j:
-                lower_bound = city_map[i][j]
-            if city_map[i][j] > upper_bound and i != j:
-                upper_bound = city_map[i][j]
-    lower_bound_cost = (len(city_map)+1) * lower_bound
-    upper_bound_cost = (len(city_map)+1) * upper_bound
-    print(lower_bound_cost)
-    print(upper_bound_cost)
-
-    low = lower_bound_cost
-    high = upper_bound_cost
-    while(low <= high):
-        mid = (low+high)/2
-        print("mid: ",mid)
-        order = [None] * (len(city_map)+1)
-        order[0] = 0
-        order[-1] = 0
-        
-        temp = permutations(1, city_map, order, mid)
-        print("order:   ",temp)
-        if temp is None:
-            low = mid + 1
-        elif temp is not None:
-            high = mid - 1
-        elif low == high and temp is not None:
-            order = temp
-            break
-    if temp == None:
-        order = permutations(1, city_map, order, mid + 1)
-    return order
-
-def salesmana(city_map):
-    order = [None] * (len(city_map)+1)
-    order[0] = 0
-    order[-1] = 0
-    order = permutations(1, city_map, order, 45)
+    bound = 999999
+    order = permutations(1, city_map, order, bound)
     return order
 
 
@@ -69,6 +31,7 @@ def permutations(k, city_map, order, bound):
                     return order
                 else:
                     order[k] = None
+                
 
    
 if __name__ == "__main__":

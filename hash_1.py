@@ -9,7 +9,7 @@ class LinkedList:
         self.head = Node(None, self.tail)
         self.len = 0
 
-class HashLinear:
+class OpenHash:
     def __init__(self, M):
         self.M = M
         self.T = [LinkedList() for i in range(M)]
@@ -47,9 +47,7 @@ class HashLinear:
         # delete if last
         if current.next.data == s:
             current.next = None
-            self.T[hash].tail = current
-
-        
+            self.T[hash].tail = current   
 
     def search(self, s):
         hash = fold(s, self.M)
@@ -66,9 +64,11 @@ class HashLinear:
             current = list.head
             data = []
             while(current.next != None):
-                data.append(current.data)
+                if current.data != None:
+                    data.append(current.data)
                 current = current.next
-            data.append(current.data)
+            if current.data != None:    
+                data.append(current.data)
             print(data)
 
         print()
@@ -76,6 +76,8 @@ class HashLinear:
 def fold(s, X):
     sum = 0
     mul = 1
+    if type(s) == int:
+        s = str(s)
     for i in range(len(s)):
         if i % 4 == 0:
             mul = 1
@@ -89,7 +91,7 @@ def fold(s, X):
 
 
 if __name__ == "__main__":
-    table = HashLinear(8)
+    table = OpenHash(8)
     table.insert("aaaa")
     table.insert("1")
     table.insert("BM40A1500")

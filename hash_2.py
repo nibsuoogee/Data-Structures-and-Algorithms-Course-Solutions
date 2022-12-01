@@ -10,7 +10,7 @@ class LinkedList:
         self.head = Node(None, self.tail)
         self.len = 0
 
-class HashLinear:
+class OpenHash:
     def __init__(self, M):
         self.M = M
         self.T = [LinkedList() for i in range(M)]
@@ -50,8 +50,6 @@ class HashLinear:
             current.next = None
             self.T[hash].tail = current
 
-        
-
     def search(self, s):
         hash = fold(s, self.M)
         current = self.T[hash].head
@@ -71,9 +69,11 @@ class HashLinear:
             current = list.head
             data = []
             while(current.next != None):
-                data.append(current.data)
+                if current.data != None:
+                    data.append(current.data)
                 current = current.next
-            data.append(current.data)
+            if current.data != None:
+                data.append(current.data)
             print(data)
 
         print()
@@ -94,30 +94,40 @@ def fold(s, X):
 
 
 if __name__ == "__main__":
-    table = HashLinear(3)
+    table = OpenHash(3)
 
     start = time.time()   
 
-    table.print()
-    print()
-
+    print("Step 1: adding values")
     table.insert(12)
-    table.insert('hashtable')
-    table.insert(1234)
-    table.insert(4328989)
-    table.insert('BM40A1500')
-    table.insert(-12456)
-    table.insert('aaaabbbbcccc')
-
     table.print()
-    print()
+    table.insert('hashtable')
+    table.print()
+    table.insert(1234)
+    table.print()
+    table.insert(4328989)
+    table.print()
+    table.insert('BM40A1500')
+    table.print()
+    table.insert(-12456)
+    table.print()
+    table.insert('aaaabbbbcccc')
+    table.print()
 
     table.search(-12456)
     table.search('hashtable')
     table.search(1235)
 
+    print()
+    table.print()
+
+    print("Removing: 'BM40A1500'")
     table.delete('BM40A1500')
+    table.print()
+    print("Removing: 1234")
     table.delete(1234)
+    table.print()
+    print("Removing: 'aaaabbbbcccc'")
     table.delete('aaaabbbbcccc')
 
     table.print()
