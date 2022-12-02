@@ -12,25 +12,24 @@ class LinkedList:
 
 class OpenHash:
     def __init__(self, M):
-        self.M = M
-        self.T = [LinkedList() for i in range(M)]
-
+        self.M = M # The size of the hash table...
+        self.T = [LinkedList() for i in range(M)] # is used to initialize M linked lists
 
     def insert(self, s):
-        hash = fold(s, self.M)
-        current = self.T[hash].head
-        while(current.data != None):
-            if current.data == s:
-                return
-            if current.next == None:
-                new = Node(s, None)
+        hash = fold(s, self.M) # sending the string/integer to the string folding hash method
+        current = self.T[hash].head # setting a pointer to the obtained value's linked list head...
+        while(current.data != None): 
+            if current.data == s: # if pointing at node containing the original value..
+                return # do not go further, the same value is already in the list.
+            if current.next == None: # if reached the end of the list..
+                new = Node(s, None) # create node
                 current.next = new
-                self.T[hash].tail = new
-                self.T[hash].len += 1
+                self.T[hash].tail = new # set list's tail to it
+                self.T[hash].len += 1 # increment list's length
                 return
             current = current.next
-        current.data = s
-        self.T[hash].len += 1
+        current.data = s # set new node's data field to the new value
+        self.T[hash].len += 1 # increment list's length
 
     def delete(self, s):
         hash = fold(s, self.M)
@@ -49,7 +48,7 @@ class OpenHash:
         if current.next.data == s:
             current.next = None
             self.T[hash].tail = current
-
+  
     def search(self, s):
         hash = fold(s, self.M)
         current = self.T[hash].head
@@ -69,11 +68,12 @@ class OpenHash:
             current = list.head
             data = []
             while(current.next != None):
-                data.append(current.data)
+                if current.data != None:
+                    data.append(current.data)
                 current = current.next
-            data.append(current.data)
+            if current.data != None:
+                data.append(current.data)
             print(data)
-
         print()
 
 def fold(s, X):
@@ -82,12 +82,12 @@ def fold(s, X):
     if type(s) == int:
         s = str(s)
     for i in range(len(s)):
-        if i % 4 == 0:
+        if i % 4 == 0: # four byte string fold
             mul = 1
         else:
             mul = mul * 256
-        sum += ord(s[i]) * mul
-    return sum % X
+        sum += ord(s[i]) * mul 
+    return sum % X # modulo operator by table size
 
 
 if __name__ == "__main__":
@@ -96,8 +96,8 @@ if __name__ == "__main__":
     table = [None] * 370105
     print(f'{"Initialization:":>22}',time.time() - init_start)
 
-    fileEnglish = open('words_alpha.txt', 'r')
-    fileFinnish = open('kaikkisanat.txt', 'r')
+    fileEnglish = open('words_alpha.txt', 'r', encoding="utf-8")
+    fileFinnish = open('kaikkisanat.txt', 'r', encoding="utf-8")
     linesEnglish = fileEnglish.readlines()
     linesEnglish = [line.strip() for line in linesEnglish]
     index = 0
