@@ -1,6 +1,21 @@
+import copy
 def binpack(items, S):
-    
-    return
+    items.sort(reverse=True)
+    unused = copy.deepcopy(items)
+    current_bin = []
+    bins = []
+    ptr = 0
+    while len(unused) > 0:
+        while ptr < len(unused):
+            if (sum(current_bin) + unused[ptr]) <= S:
+                current_bin.append(unused[ptr])
+                unused.remove(unused[ptr])
+                continue
+            ptr += 1
+        bins.append(current_bin)
+        current_bin = []
+        ptr = 0
+    return bins
     
  
 if __name__ == "__main__":
